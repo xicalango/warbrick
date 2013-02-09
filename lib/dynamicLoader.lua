@@ -2,9 +2,16 @@
 
 DynamicLoader = class("DynamicLoader")
 
+function DynamicLoader:initialize( baseDir )
+  self.baseDir = baseDir or ""
+end
+
+
 function DynamicLoader:loadFolder( folderName )
 
-  local files = love.filesystem.enumerate( folderName )
+  folderName = folderName or ""
+
+  local files = love.filesystem.enumerate( self.baseDir .. "/" .. folderName )
   
   for i,f in ipairs(files) do
     if string.match(f, "%.lua$") then
@@ -15,7 +22,7 @@ function DynamicLoader:loadFolder( folderName )
 end
 
 function DynamicLoader:loadFile( path )
-	local chunk = love.filesystem.load( path )
+	local chunk = love.filesystem.load( self.baseDir .. "/" .. path )
 	self:loadCallback( chunk() )
 end
 

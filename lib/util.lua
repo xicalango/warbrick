@@ -3,10 +3,8 @@
 util = {}
 util.__index = util
 
-function util.preserveColor( color, fn )
+function util.preserveColor( fn )
 	local _r,_g,_b,_a = love.graphics.getColor()
-	
-	love.graphics.setColor( color )
 	
 	fn()
 	

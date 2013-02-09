@@ -42,21 +42,13 @@ end
 
 GameStateManager = DynamicLoader:subclass("GameStateManager")
 
-function GameStateManager:initialize()
+function GameStateManager:initialize(...)
+  DynamicLoader.initialize( self, ... )
+  
     self.states = {}
     self.currentState = GameState:new()
     
 	self.frames = 0
-end
-
-function GameStateManager:registerFolder( folderName )
-  self:loadFolder( folderName )
-end
-
-function GameStateManager:registerAll( statedefs )
-    for i,statedef in ipairs(statedefs) do
-        self:register( statedef )
-    end
 end
 
 function GameStateManager:register( statedef )
