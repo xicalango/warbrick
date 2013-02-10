@@ -1,67 +1,68 @@
 -- warbrick (c) 2013 <weldale@gmail.com>
 
+local mapDefs = require("defs/maps")
+local tileDefs = require("defs/tiles")
+
 Map = class("Map")
 
-Map.static.size = {15,13}
-
-function Map:initialize()
+function Map:initialize(mapName)
   
-  self.wall = assetManager:create("wallblock")
-  self.clay = assetManager:create("clayblock")
+  self.def = mapDefs[mapName]
+  assert(self.def, "Definition " .. mapName .. " does not exist")
   
-  self.wallTileSize = self.wall:getSize()
+  self:_buildMap()
   
-  self.pageSize = {
-    Map.static.size[1] * self.wallTileSize[1],
-    Map.static.size[2] * self.wallTileSize[2]
-  }
+  self.entities = {}
   
 end
 
-function Map:draw()
+function Map:_buildMap()
+  self.width = self.def.size[1]
+  self.height = self.def.size[2]
   
-  util.preserveColor(function()
-    love.graphics.setColor{138,226,52}
-    love.graphics.rectangle("fill", 0, 0, self.pageSize[1], self.pageSize[2] )
-  end)
-
-  local dv = v2()
+  self.map = {}
+  self.mapInfo = {}
   
-  for xx = 0, Map.static.size[1]-1 do
-    self.wall:draw( dv )
+  for y = 1, self.height do
+    local line = {}
+    local infoLine = {}
     
-    dv.y = self.wallTileSize[2] * (Map.static.size[2]-1)
-    
-    self.wall:draw( dv )
-    
-    dv:set(dv.x + self.wallTileSize[1], 0)
-  end
-  
-  dv.x = 0
-  dv.y = 0
-  
-  for yy = 0, Map.static.size[2]-1 do
-    self.wall:draw( dv )
-    
-    dv.x = self.wallTileSize[1] * (Map.static.size[1]-1)
-    
-    self.wall:draw( dv )
-    
-    dv:set(0, dv.y + self.wallTileSize[2])
-  end
-  
-  for xx = 1, Map.static.size[1]-2 do
-    for yy = 1, Map.static.size[2]-2 do
-      
-      if xx % 2 == 0 and yy % 2 == 0 then
-        
-        self.clay:draw( v2(xx * self.wallTileSize[1], yy * self.wallTileSize[2]) )
-        
-      end
-      
-      
+    for x = 1, self.width do
+      line[x] = string.sub( self.def.map[y], x, x )
+      infoLine[x] = tileDefs[line[x]]
     end
+    
+    self.map[y] = line
+    self.mapInfo[y] = infoLine
   end
   
+end
+
+function Map:update(dt)
   
+  for i,v in ipairs(self.entities) do
+    v:update(dt)
+  end
+  
+end
+
+
+function Map:drawEntities(viewArea)  
+  
+  for i,v in ipairs(self.entities) do
+    
+    if viewArea:pointInArea( v.vC ) then
+      v:draw()
+    end
+    
+  end
+  
+end
+
+function Map:mapPos( tileX, tileY )
+  return tileX * 45, tileY * 45
+end
+
+function Map:addEntity( e )
+  table.insert(self.entities, e)
 end

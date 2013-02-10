@@ -31,7 +31,8 @@ function AbstractGraphics:setMouseView()
 end
 
 function AbstractGraphics:draw( v2Coor, pars )
-  local v2Dir = v2(0, -1)
+  local v2Dir = nil
+  
   local tintOverride = nil
   local parPhi = nil
   
@@ -40,15 +41,21 @@ function AbstractGraphics:draw( v2Coor, pars )
 	end
   
   if pars then
-    
     v2Dir = pars.v2Dir or v2Dir
     tintOverride = pars.tintOverride or tintOverride
     parPhi = pars.phi or parPhi
-    
   end
   
-  local phi = parPhi or v2Dir:angle(v2Coor) + math.rad(90)
-  local v2OffCoor = v2Coor + v2t(self.offset)
+  local phi = math.rad(90)
+  
+  if parPhi then
+    phi = parPhi
+  elseif v2Dir then
+    phi = v2Dir:angle(v2Coor) 
+  end
+  
+  local xoff = v2Coor.x + self.offset[1]
+  local yoff = v2Coor.y + self.offset[2]
   
   util.preserveColor( function()
       
@@ -64,9 +71,8 @@ function AbstractGraphics:draw( v2Coor, pars )
           x = v2Coor.x,
           y = v2Coor.y,
           [phi] = phi,
-          [v2OffCoor] = v2OffCoor,
-          xoff = v2OffCoor.x,
-          yoff = v2OffCoor.y,
+          xoff = xoff,
+          yoff = yoff,
           sx = self.scale[1],
           sy = self.scale[2] or self.scale[1],
           ox = self.offset[1],

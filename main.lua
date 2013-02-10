@@ -10,11 +10,19 @@ require("lib/graphics")
 require("lib/graphicsPreloader")
 require("lib/assetManager")
 require("lib/viewContainer")
+require("lib/tileset")
+require("lib/viewport")
+
+require("entities/entity")
+require("entities/player")
 
 require("map")
 
+require("keyconfig")
 
 function love.load()
+  startTime = love.timer.getMicroTime( )
+  
   local graphicsPreloader = GraphicsPreloader:new("assets")
   graphicsPreloader:loadFile("graphics.lua")
   
@@ -24,7 +32,7 @@ function love.load()
   
   gameStateManager = GameStateManager:new()
   gameStateManager:loadFolder( "states" )
-  gameStateManager:change( "ingame" )
+  gameStateManager:change( "ingame", "level2" )
 end
 
 function love.draw()

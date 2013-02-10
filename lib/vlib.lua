@@ -17,6 +17,7 @@ end
 function Vector2D:initialize( x, y )
   self.x = x or 0
   self.y = y or 0
+  
 end
 
 function Vector2D:__add( o )
@@ -35,7 +36,22 @@ function Vector2D:__tostring( )
   return "V2(" .. self.x .. ", " .. self.y .. ")"
 end
 
-  function Vector2D:get( idx )
+function Vector2D:scale( sx, sy )
+  sx = sx or 1
+  sy = sy or sx
+  
+  return v2( self.x * sx, self.y * sy )
+end
+
+function Vector2D:floor()
+  return v2( math.floor(self.x), math.floor(self.y) )
+end
+
+function Vector2D:ceil()
+  return v2( math.ceil(self.x), math.ceil(self.y) )
+end
+
+function Vector2D:get( idx )
     if idx == 1 then
       return self.x
     elseif idx == 2 then
@@ -78,13 +94,21 @@ end
 
 Area = class("Area")
 
+function area( x, y, w ,h )
+  return Area:new( v2( x, y ), v2( w, h ) )
+end
+
 function Area:initialize( vTopLeft, vSize )
-  self.vTL = vTopLeft or v2(0,0)
-  self.vSize = vSize w or v2(0,0)  
+  self.vO = vTopLeft or v2(0,0)
+  self.vSize = vSize or v2(0,0)  
+end
+
+function Area:__tostring()
+  return "Area( " .. tostring(self.vO) .. ", " .. tostring(self.vSize) .. ")"
 end
 
 function Area:move( vDispl )
-  self.vTL = self.vTL + vDispl
+  self.vO = self.vO + vDispl
 end
 
 function Area:getRatio()
@@ -97,13 +121,17 @@ end
 
 function Area:map( area, vDst )
     return v2(
-      (area.vSize.x / self.vSize.x) * (vDst.x - self.vTL.x) + area.vTL.x,
-      (area.vSize.y / self.vSize.y) * (vDst.y - self.VTL.y) + area.vTL.y
+      (area.vSize.x / self.vSize.x) * (vDst.x - self.vO.x) + area.vO.x,
+      (area.vSize.y / self.vSize.y) * (vDst.y - self.vO.y) + area.vO.y
       )
 end
 
 function Area:getLowerRight()
-  return vO + vSize
+  return self.vO + self.vSize
+end
+
+function Area:getLowerRightXY()
+  return self.vO.x + self.vSize.x, self.vO.y + self.vSize.y
 end
 
 function Area:pointInArea( vQ ) 

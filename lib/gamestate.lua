@@ -66,8 +66,9 @@ end
 -- State will be changed on next call to GameState:update
 -- Calls onStateChange with the old state. When this method returns false, the state is not changed.
 --]]
-function GameStateManager:change( name )
+function GameStateManager:change( name, ... )
     self.newState = name 
+    self.activationParams = ...
 end
 
 function GameStateManager:_changeState(name)
@@ -85,9 +86,11 @@ function GameStateManager:_change()
     
     self.oldstate = self.currentStateName
 
-    if self.states[name]:onStateChange(self.oldstate) then
+    if self.states[name]:onStateChange(self.oldstate, self.activationParams) then
       self:_changeState(name)
     end
+    
+    self.activationParams = nil
 end
 
 function GameStateManager:foreignCall( statename, callfn, ... )

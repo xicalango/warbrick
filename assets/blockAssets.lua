@@ -1,20 +1,8 @@
 return {
-  
   {
-    id = "wallblock",
-    type = "box",
-    mode = "fill",
-    offset = {0, 0},
-    size = {45, 45},
-    tint = {186,189,182}
-  },
-  {
-    id = "clayblock",
-    type = "box",
-    mode = "fill",
-    offset = {0, 0},
-    size = {45, 45},
-    tint = {233,185,110}
+    id = "standardBrick",
+    type = "image",
+    offset = {22.5, 22.5},
+    image = "$standardBrick"
   }
-  
 }
