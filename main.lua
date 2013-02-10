@@ -25,6 +25,9 @@ require("gui")
 require("keyconfig")
 
 function love.load()
+  if arg[#arg] == "-debug" then require("mobdebug").start() end
+  debug = true
+  
   startTime = love.timer.getMicroTime( )
   
   local graphicsPreloader = GraphicsPreloader:new("assets")

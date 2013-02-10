@@ -10,6 +10,7 @@ function Player:initialize( vO, number )
   self.goto = { up = false, down = false, left = false, right = false }
   
   self.graphics = assetManager:create("player" .. number)
+  self.dropshadow = assetManager:create("dropshadow")
   
   self.hitbox.left = 15
   self.hitbox.right = 15
@@ -181,8 +182,8 @@ function Player:update(dt)
 end
 
 function Player:draw()
+  self.dropshadow:draw( self.vC )
   Entity.draw(self)
-  
   --love.graphics.circle( "line", self.vC.x, self.vC.y, self.collectRadius )
 end
 

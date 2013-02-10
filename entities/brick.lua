@@ -24,7 +24,7 @@ function Brick:initialize( v0 )
   self.selected = false
   self.state = Brick.static.states.ONGROUND
   
-  self.friction = 0.011
+  self.friction = 1.5
   
   self.lastOwner = nil
   
@@ -51,15 +51,20 @@ function Brick:deattach( e )
     self:setTint()
     return
   end
-
-  self.vD.x = e.vD.x
-  self.vD.y = e.vD.y
-  self.speed = e.speed + 300
+  
+  self:applyPhysics( e.vD, e.speed + 300 )
   
   self:setTint()
+end
+
+function Brick:applyPhysics( vD, speed )
+  self.vD.x = vD.x
+  self.vD.y = vD.y
+  self.speed = speed
   
   self.state = Brick.static.states.FLYING
 end
+
 
 function Brick:setSelected( state )
   self.selected = state
@@ -85,9 +90,9 @@ function Brick:onStop()
 end
 
 function Brick:update(dt)
+  if self.gotHit then print(self.vC, self.vD) end
   
   if self.state == Brick.static.states.FLYING then
-  
     for _,p in gameManager:iFindEntities( ffAnd( ffPlayers, function(e) return e ~= self.lastOwner end ) ) do
         if self:collidesEntity(p) then
           self:stop()
@@ -121,5 +126,15 @@ function Brick:blocks(e)
   return false
   
 end
+
+function Brick:onCollide( e )
+  
+  if e and e.category.isBrick then
+    e:applyPhysics( self.vD * 0.9, self.speed )
+    self:stop()
+  end
+
+end
+
 
 

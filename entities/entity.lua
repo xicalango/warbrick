@@ -60,16 +60,19 @@ function Entity:setTimerEnabled( name, value )
 	self.timers[name].enabled = value
 end
 
+function Entity:isMoving()
+  return self.vD.x ~= 0 or self.vD.y ~= 0
+end
+
 function Entity:_move(dt)
   
   if self.attachedAt then
     self.vC.x = self.attachedAt.entity.vC.x + self.attachedAt.offset[1]
     self.vC.y = self.attachedAt.entity.vC.y + self.attachedAt.offset[2]
   else
-    if self.vD.x ~= 0 or self.vD.y ~= 0 then
-      
-      self.vD.x = self.vD.x * (1 - self.friction)
-      self.vD.y = self.vD.y * (1 - self.friction)
+    if self:isMoving() then
+      self.vD.x = self.vD.x * (1 - self.friction * dt)
+      self.vD.y = self.vD.y * (1 - self.friction * dt)
       
       if self.vD:normsq() < 0.01 then 
         self:stop()
@@ -86,7 +89,10 @@ function Entity:_move(dt)
       self.vC.x = newX
       self.vC.y = newY
       
-      if gameManager:isWallForEntity( self ) then
+      local wallTest, e = gameManager:isWallForEntity( self )
+      
+      if wallTest then
+        self:onCollide(e)
         self.vC.x = oldX
         
         if gameManager:isWallForEntity( self ) then
@@ -95,7 +101,7 @@ function Entity:_move(dt)
           
           if gameManager:isWallForEntity( self ) then
             self.vC.x = oldX
-            self:stop()
+            self.vC.y = oldY
           end
           
         end
@@ -193,7 +199,7 @@ end
 function Entity:onRemove()
 end
 
-function Entity:onCollide( )
+function Entity:onCollide( e )
 end
 
 function Entity:onMousePressed( button )

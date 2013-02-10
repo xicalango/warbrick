@@ -40,7 +40,7 @@ function Map:_buildMap()
       if def.type == "tile" then
         infoLine[x] = def
       elseif def.type == "brick" then
-        line[x] = " "
+        line[x] = "."
         infoLine[x] = tileDefs[" "]
         
         table.insert(bricks, {self:mapPos( x, y )})
@@ -51,6 +51,14 @@ function Map:_buildMap()
         
         self.startPositions[def.playerNumber] = {self:mapPos( x, y )}
       else
+      end
+    
+      if line[x] == " " then
+          
+        if self.map[y-1][x] == "#" then
+          line[x] = "'"
+        end
+          
       end
       
       
@@ -79,7 +87,7 @@ function Map:isWallForEntity( e )
   if self:isWall(r1x,r1y) or self:isWall(r2x,r2y) then return true end
     
   for _,b in self:iFindEntities( function(ee) return ee ~= e and ee:blocks(e) end) do
-    if e:collidesEntity(b) then return true end
+    if e:collidesEntity(b) then return true, b end
   end
   
   return false

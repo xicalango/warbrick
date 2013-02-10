@@ -5,7 +5,7 @@ return {
     type = "image",
     offset = {14, 22},
     image = "$playerCharacter",
-    tint = {127,127,127}
+    tint = {127,127,255}
   },
   
   {
@@ -13,7 +13,7 @@ return {
     type = "image",
     offset = {14, 22},
     image = "$playerCharacter",
-    tint = {0,0,0}
+    tint = {255,127,255}
   },
   
   {
@@ -30,6 +30,13 @@ return {
     offset = {14, 22},
     image = "$playerCharacter",
     tint = {0,255,255}
+  },
+  
+  {
+    id = "dropshadow",
+    type = "image",
+    offset = {14, -18},
+    image = "$dropshadow",
+    tint = {0,0,0,128}
   }
-
 }
