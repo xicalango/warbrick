@@ -20,6 +20,7 @@ function ViewContainer:add( id, component, x, y, z, w, h )
   
   self.components[id] = {
     id = id,
+	canvas = love.graphics.newCanvas( w, h ),
     x = x or 0,
     y = y or 0,
     z = z or 0,
@@ -49,22 +50,22 @@ function ViewContainer:draw()
   table.sort(drawComponents, ViewContainer.static._zSort)
   
   for i,v in ipairs(drawComponents) do
-    local componentCanvas = love.graphics.newCanvas( v.w, v.h )
     local parentCanvas = love.graphics.getCanvas()
     
-    love.graphics.setCanvas( componentCanvas )
+	v.canvas:clear()
+    love.graphics.setCanvas( v.canvas )
     v.component:draw()
     love.graphics.setCanvas( parentCanvas )
     
-    love.graphics.draw( componentCanvas, v.x, v.y )
+    love.graphics.draw( v.canvas, v.x, v.y )
     
-    --[[
+	--[[
     util.preserveColor(function()
         love.graphics.setColor{255,0,0}
         love.graphics.print( v.id, v.x + 5, v.y + 5 )
         love.graphics.rectangle("line", v.x, v.y, v.w, v.h)
     end)
-  ]]
+	]]
   end
   
   
