@@ -11,6 +11,10 @@ Needs löve2D engine version 0.8.0.
 Controls
 ========
 
+- F5 - toggle fullscreen (resolution is 800x600)
+- F11 - restart game
+- F12 - quit
+
 Player 1
 --------
 
