@@ -68,7 +68,7 @@ end
 
 function Brick:setTint()
   if self.selected then
-    self.graphics.tintOverride = {0, 255, 0}
+    self.graphics.tintOverride = {64, 255, 64}
   elseif self.lastOwner then
     self.graphics.tintOverride = self.lastOwner.graphics.tint
   else
