@@ -35,6 +35,16 @@ function Vector2D:__tostring( )
   return "V2(" .. self.x .. ", " .. self.y .. ")"
 end
 
+  function Vector2D:get( idx )
+    if idx == 1 then
+      return self.x
+    elseif idx == 2 then
+      return self.y
+    else
+      error("idx must lie between 1 and 2")
+    end
+  end
+
 function Vector2D:set( x, y )
   self.x = x
   self.y = y
@@ -60,5 +70,46 @@ end
 
 function Vector2D:clone()
   return v2t( self )
+end
+
+function Vector2D:ratio()
+  return self.x / self.y
+end
+
+Area = class("Area")
+
+function Area:initialize( vTopLeft, vSize )
+  self.vTL = vTopLeft or v2(0,0)
+  self.vSize = vSize w or v2(0,0)  
+end
+
+function Area:move( vDispl )
+  self.vTL = self.vTL + vDispl
+end
+
+function Area:getRatio()
+  return vSize:ratio()
+end
+
+function Area:scale( f )
+  self.vSize = self.vSize * f
+end
+
+function Area:map( area, vDst )
+    return v2(
+      (area.vSize.x / self.vSize.x) * (vDst.x - self.vTL.x) + area.vTL.x,
+      (area.vSize.y / self.vSize.y) * (vDst.y - self.VTL.y) + area.vTL.y
+      )
+end
+
+function Area:getLowerRight()
+  return vO + vSize
+end
+
+function Area:pointInArea( vQ ) 
+    return vQ.x >= self.vO.x and
+           vQ.x <= self.vO.x+self.vSize.x and
+           vQ.y >= self.vO.y and
+           vQ.y <= self.vO.y+self.vSize.y
 end
 
