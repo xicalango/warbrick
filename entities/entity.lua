@@ -95,6 +95,7 @@ function Entity:_move(dt)
           
           if gameManager:isWallForEntity( self ) then
             self.vC.x = oldX
+            self:stop()
           end
           
         end
