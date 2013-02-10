@@ -8,7 +8,7 @@ and press the throw-key.
 
 Needs löve2D engine version 0.8.0.
 
-controls
+Controls
 ========
 
 Player 1
@@ -35,11 +35,11 @@ Player 4
 tfgh - walk
 shift - pickup/throw
 
-adding more players
+Adding more players
 ==================
 
-In main.lua change line n. 42 
+In main.lua change the last number on line n. 42:
 
 ```lua
-gameStateManager:change( "ingame", "level1", 2  ) --last number = playercount
+gameStateManager:change( "ingame", "level1", 2  ) --last number = playercount (up to 4)
 ```
