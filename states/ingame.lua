@@ -10,21 +10,35 @@ function InGame:load()
   self.tileset = Tileset:new("assets/tiles.lua")
 end
 
-function InGame:onStateChange(oldState, mapId, ...)
-  if not oldState then
-    self.map = Map:new(mapId)
+function InGame:createViewportFor( e, w, h )
+  return Viewport:new( 
+    area( e.vC.x - w/2, e.vC.y - h/2, w, h ), 
+    self.map, self.tileset, 
+    { followSelector = e:getFollowFunction(), scrollBorder = -1 } 
+    )
+end
+
+function InGame:createGlobalViewport( w, h )
+  return Viewport:new(
+    area( 0, 0, w, h ),
+    self.map,
+    self.tileset
+    )
+end
+
+
+function InGame:onStateChange(oldState, params)
+  if not oldState or oldState == "ingame" then
+    self.map = Map:new(params[1])
+    self.players = {}
     
-    self.players = {
-      Player:new( v2( 36, 30 ), 1 ),
-      Player:new( v2( 36, 30 ), 2 ),
-      Player:new( v2( 36, 30 ), 3 ),
-      Player:new( v2( 36, 30 ), 4 )
-    }
+    gameManager = GameManager:new( self.map, self.players )
     
-    self.map:addEntity( self.players[1] )
-    self.map:addEntity( self.players[2] )
-    self.map:addEntity( self.players[3] )
-    self.map:addEntity( self.players[4] )
+    for i = 1, params[2] do
+      gameManager:newPlayer( i )
+    end
+    
+    self.gui = Gui:new()
     
     self.viewContainer = ViewContainer:new()
     self.viewContainer.backgroundColor = {32,74,135}
@@ -32,18 +46,23 @@ function InGame:onStateChange(oldState, mapId, ...)
     self.viewportContainer = ViewContainer:new( 675, 585 )
     
     self.viewports = {
-      Viewport:new( area( 0, 0, 327, 282 ), self.map, self.tileset, { followSelector = self.players[1]:getFollowFunction() } ),
-      Viewport:new( area( 0, 0, 327, 282 ), self.map, self.tileset, { followSelector = self.players[2]:getFollowFunction() } ),
-      Viewport:new( area( 0, 0, 327, 282 ), self.map, self.tileset, { followSelector = self.players[3]:getFollowFunction() } ),
-      Viewport:new( area( 0, 0, 327, 282 ), self.map, self.tileset, { followSelector = self.players[4]:getFollowFunction() } )
+      
+      --self:createViewportFor( self.players[1], 327, 282 ),
+      --self:createViewportFor( self.players[2], 327, 282 ),
+      --self:createViewportFor( self.players[3], 327, 282 ),
+      --self:createViewportFor( self.players[4], 327, 282 )
+      
+      self:createGlobalViewport( 675, 585 )
     }
     
-    self.viewportContainer:add( "vp1", self.viewports[1], 0, 0, 0, 327, 282 )
-    self.viewportContainer:add( "vp2", self.viewports[2], 337, 0, 0, 327, 282 )
-    self.viewportContainer:add( "vp3", self.viewports[3], 0, 292, 0, 327, 282 )
-    self.viewportContainer:add( "vp4", self.viewports[4], 337, 292, 0, 327, 282 )
+    self.viewportContainer:add( "vp1", self.viewports[1], 0, 0, 0, 675, 585 )
+    --self.viewportContainer:add( "vp2", self.viewports[2], 337, 0, 0, 327, 282 )
+    --self.viewportContainer:add( "vp3", self.viewports[3], 0, 292, 0, 327, 282 )
+    --self.viewportContainer:add( "vp4", self.viewports[4], 337, 292, 0, 327, 282 )
     
     self.viewContainer:add( "viewports", self.viewportContainer, 10, 7, 0, 675, 585 )
+    
+    self.viewContainer:add( "gui", self.gui, 700, 7, 0, 95, 585 )
   end
   
   return true

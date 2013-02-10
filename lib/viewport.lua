@@ -55,18 +55,26 @@ function Viewport:update(dt)
     
     local vDest = self.followSelector()
 
-    if vDest.x < self.viewArea.vO.x + self.scrollBorder then
-        self.viewArea.vO.x = vDest.x - self.scrollBorder
-    elseif vDest.x > self.viewArea.vO.x + self.viewArea.vSize.x - self.scrollBorder then
-        self.viewArea.vO.x = vDest.x - (self.viewArea.vSize.x - self.scrollBorder)
+    if self.scrollBorder == -1 then
+      self.viewArea.vO.x = vDest.x - self.viewArea.vSize.x / 2
+      self.viewArea.vO.y = vDest.y - self.viewArea.vSize.y / 2
+      
+    else
+
+      if vDest.x < self.viewArea.vO.x + self.scrollBorder then
+          self.viewArea.vO.x = vDest.x - self.scrollBorder
+      elseif vDest.x > self.viewArea.vO.x + self.viewArea.vSize.x - self.scrollBorder then
+          self.viewArea.vO.x = vDest.x - (self.viewArea.vSize.x - self.scrollBorder)
+      end
+
+      if vDest.y < self.viewArea.vO.y + self.scrollBorder then
+          self.viewArea.vO.y = vDest.y - self.scrollBorder
+      elseif vDest.y > self.viewArea.vO.y + self.viewArea.vSize.y - self.scrollBorder then
+          self.viewArea.vO.y = vDest.y - (self.viewArea.vSize.y - self.scrollBorder)
+      end
+    
     end
 
-    if vDest.y < self.viewArea.vO.y + self.scrollBorder then
-        self.viewArea.vO.y = vDest.y - self.scrollBorder
-    elseif vDest.y > self.viewArea.vO.y + self.viewArea.vSize.y - self.scrollBorder then
-        self.viewArea.vO.y = vDest.y - (self.viewArea.vSize.y - self.scrollBorder)
-    end
-    
   end
   
   if self.viewArea.vO.x < 0 then 

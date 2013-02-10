@@ -16,11 +16,27 @@ function Entity:initialize( v0 )
   self.hitbox = { left = 0, right = 0, top = 0, bottom = 0 }
   
   self.timers = {}
+  
+  self.category = {
+    isPlayer = false,
+    isBrick = false
+  }
+  
+  self.attachedAt = nil
 
 end
 
 function Entity:getFollowFunction()
   return function() return self.vC end
+end
+
+function Entity:attachAt( e, ox, oy )
+  if not e then
+    self.attachedAt = nil
+    return
+  end
+  
+  self.attachedAt = { entity = e, offset = {ox or 0, oy or 0} }
 end
 
 
@@ -44,22 +60,57 @@ function Entity:setTimerEnabled( name, value )
 	self.timers[name].enabled = value
 end
 
-function Entity:update(dt)
-	if self.dx ~= 0 or self.dy ~= 0 then
-	  self.speed = self.speed * (1 - self.friction)
-	
-    local newX = self.vC.x + self.vD.x * (self.speed * dt)
-    local newY = self.vC.y + self.vD.y * (self.speed * dt)
+function Entity:_move(dt)
   
-		if not self:isWall( newX, newY ) then
-			self.vC.x = newX
-			self.vC.y = newY
-		elseif not self:isWall( newX, self.vC.y ) then
+  if self.attachedAt then
+    self.vC.x = self.attachedAt.entity.vC.x + self.attachedAt.offset[1]
+    self.vC.y = self.attachedAt.entity.vC.y + self.attachedAt.offset[2]
+  else
+    if self.vD.x ~= 0 or self.vD.y ~= 0 then
+      
+      self.vD.x = self.vD.x * (1 - self.friction)
+      self.vD.y = self.vD.y * (1 - self.friction)
+      
+      if self.vD:normsq() < 0.01 then 
+        self:stop()
+        return
+      end
+      
+      
+      local oldX = self.vC.x
+      local oldY = self.vC.y
+    
+      local newX = self.vC.x + self.vD.x * (self.speed * dt)
+      local newY = self.vC.y + self.vD.y * (self.speed * dt)
+    
       self.vC.x = newX
-    elseif not self:isWall( self.vC.x, newPos.y ) then
       self.vC.y = newY
+      
+      if gameManager:isWallForEntity( self ) then
+        self.vC.x = oldX
+        
+        if gameManager:isWallForEntity( self ) then
+          self.vC.x = newX
+          self.vC.y = oldY
+          
+          if gameManager:isWallForEntity( self ) then
+            self.vC.x = oldX
+          end
+          
+        end
+        
+      end
+      
     end
+
   end
+  
+end
+
+
+function Entity:update(dt)
+  
+  self:_move(dt)
 	
 	for k,v in pairs(self.timers) do
 		if v.unit == "s" then
@@ -71,7 +122,7 @@ function Entity:update(dt)
 		if v.time <= 0 then
 			if v.callback ~= nil then
 				local newTime = v.callback(self)
-				if newTime == -1 then --remove timer
+				if not newTime then --remove timer
 					self.timers[k] = nil
 				else
 					v.time = newTime
@@ -83,32 +134,54 @@ function Entity:update(dt)
 		
 	end
   
+  if self.graphics then
+    self.graphics:update(dt)
+  end
+  
+end
+
+function Entity:blocks( e )
+  return false
+end
+
+function Entity:collides( x, y )
+	return x >= self.vC.x - self.hitbox.left and x <= self.vC.x + self.hitbox.right and y >= self.vC.y - self.hitbox.top and y <= self.vC.y + self.hitbox.bottom
+end
+
+function Entity:collidesEntity( e2 )
+  
+  local sr11, sr12, sr21, sr22 = self:fastGetHitRectangle()
+  local er11, er12, er21, er22 = e2:fastGetHitRectangle()
+  
+  return fastRectangleIntersectTest( 
+    sr11, sr12, sr21, sr22,
+    er11, er12, er21, er22
+  )
+end
+
+function Entity:fastGetHitRectangle()
+  return 
+    self.vC.x - self.hitbox.left,
+    self.vC.y - self.hitbox.top,
+    self.vC.x + self.hitbox.right,
+    self.vC.y + self.hitbox.bottom
 end
 
 function Entity:isWall( x, y )
-  return false
+  return gameManager:isWall( x, y )
 end
 
 function Entity:draw()
   if self.graphics then
     self.graphics:draw( self.vC )
+    --love.graphics.circle("line", self.vC.x, self.vC.y, 5)
   end
 end
 
 function Entity:stop()
-  self.dx = 0
-  self.dy = 0
-end
-
-function Entity:collide( vTest )
-  
-  return area( 
-    self.vC.x - self.hitbox.left, 
-    self.y - self.hitbox.top, 
-    self.hitbox.left + self.hitbox.right,
-    self.hitbox.top + self.hitbox.bottom
-  ):pointInArea( vTest )
-
+  self.vD.x = 0
+  self.vD.y = 0
+  self:onStop()
 end
 
 function Entity:removeFromMap()
@@ -124,3 +197,7 @@ end
 
 function Entity:onMousePressed( button )
 end
+
+function Entity:onStop()
+end
+

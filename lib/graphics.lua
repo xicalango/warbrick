@@ -10,6 +10,8 @@ function AbstractGraphics:initialize( init )
   self.tint = nil
   self.rotationFn = nil
   
+  self.tintOverride = nil
+  
   if init then
     
     self.offset = init.offset or self.offset 
@@ -33,7 +35,7 @@ end
 function AbstractGraphics:draw( v2Coor, pars )
   local v2Dir = nil
   
-  local tintOverride = nil
+  local tintOverride = self.tintOverride
   local parPhi = nil
   
   if self.rotationFn then

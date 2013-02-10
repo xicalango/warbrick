@@ -66,13 +66,20 @@ function Vector2D:set( x, y )
   self.y = y
 end
 
+function Vector2D:normsq( )
+  return self.x * self.x + self.y * self.y
+end
+
+function Vector2D:norm( )
+  return match.sqrt( self:normsq() )
+end
+
 function Vector2D:dst( o )
   return math.sqrt( self:dstsq( o ) )
 end
 
 function Vector2D:dstsq( o )
-  local dx, dy = (o - self):getXY()
-  return dx * dx + dy * dy
+  return (o - self):normsq()
 end
 
 function Vector2D:angle( o )
@@ -141,3 +148,17 @@ function Area:pointInArea( vQ )
            vQ.y <= self.vO.y+self.vSize.y
 end
 
+function Area:intersects( vTest )
+  return fastRectangleIntersectTest(
+     self.vO.x,  self.vO.y,  self.vO.x +  self.vSize.x,  self.vO.y +  self.vSize.y,
+    vTest.vO.x, vTest.vO.y, vTest.vO.x + vTest.vSize.x, vTest.vO.y + vTest.vSize.y
+    )
+end
+
+function fastRectangleIntersectTest( r1x1, r1y1, r1x2, r1y2, r2x1, r2y1, r2x2, r2y2 )
+  return not ( 
+		r1x2 < r2x1 or 
+		r2x2 < r1x1 or
+		r2y1 > r1y2 or
+		r1y1 > r2y2)
+end

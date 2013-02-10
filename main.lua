@@ -15,8 +15,12 @@ require("lib/viewport")
 
 require("entities/entity")
 require("entities/player")
+require("entities/brick")
+
+require("gameManager")
 
 require("map")
+require("gui")
 
 require("keyconfig")
 
@@ -32,7 +36,7 @@ function love.load()
   
   gameStateManager = GameStateManager:new()
   gameStateManager:loadFolder( "states" )
-  gameStateManager:change( "ingame", "level2" )
+  gameStateManager:change( "ingame", "level1", 2 )
 end
 
 function love.draw()
@@ -48,6 +52,8 @@ function love.keypressed(key)
   if key == "f12" then
 		love.event.push("quit")
     return
+  elseif key == "f11" then
+    gameStateManager:change( "ingame", "level1", 2 )
   elseif key == "f5" then
     love.graphics.toggleFullscreen()
     return

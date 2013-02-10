@@ -68,7 +68,7 @@ end
 --]]
 function GameStateManager:change( name, ... )
     self.newState = name 
-    self.activationParams = ...
+    self.activationParams = {...}
 end
 
 function GameStateManager:_changeState(name)

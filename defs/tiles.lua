@@ -4,15 +4,13 @@ local tiledefs = {
   ["#"] = {
       name = "BoundaryWall",
       type = "tile",
-      walkable = false,
-      wall = true
+      walkable = false
     },
     
-    [" "] = {
+  [" "] = {
       name = "Floor",
       type = "tile",
-      walkable = true,
-      wall = false
+      walkable = true
     },
     
     ["0"] = {

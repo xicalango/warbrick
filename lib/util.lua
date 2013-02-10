@@ -89,7 +89,7 @@ function util.filter(tbl, filter)
     
     for k, v in pairs(tbl) do
         if filter(v,k) then
-            result[k] = v
+            table.insert(result, v)
         end
     end
 
