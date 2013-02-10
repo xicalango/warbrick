@@ -18,7 +18,7 @@ function Player:initialize( vO, number )
   
   self.collectRadius = 50
   
-  self.speed = 200
+  self.speed = 150
   
   self.selectedBrick = nil
   
@@ -132,7 +132,7 @@ function Player:_selectBricks()
     function(e) 
       return 
         e.category.isBrick 
-        and not e.attachedAt
+        and e:selectable()
         and self.vC:dstsq( e.vC ) <= self.collectRadius * self.collectRadius
     end
   )

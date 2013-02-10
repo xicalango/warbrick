@@ -24,10 +24,14 @@ function Brick:initialize( v0 )
   self.selected = false
   self.state = Brick.static.states.ONGROUND
   
-  self.friction = 0.009
+  self.friction = 0.011
   
   self.lastOwner = nil
   
+end
+
+function Brick:selectable()
+  return self.state == Brick.static.states.ONGROUND
 end
 
 function Brick:attach( e )
@@ -50,7 +54,7 @@ function Brick:deattach( e )
 
   self.vD.x = e.vD.x
   self.vD.y = e.vD.y
-  self.speed = e.speed + 100
+  self.speed = e.speed + 300
   
   self:setTint()
   
