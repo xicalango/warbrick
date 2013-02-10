@@ -104,15 +104,11 @@ end
 
 
 function Map:drawEntities(viewArea)  
-  
   for i,v in ipairs(self.entities) do
-    
-    if viewArea:pointInArea( v.vC ) then
+    if viewArea:fastIntersects( v:fastGetHitRectangle() ) then
       v:draw()
     end
-    
   end
-  
 end
 
 function Map:tilePos( mapX, mapY )

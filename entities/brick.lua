@@ -25,6 +25,7 @@ function Brick:initialize( v0 )
   self.state = Brick.static.states.ONGROUND
   
   self.friction = 1.5
+  self.bouncieness = 0.1
   
   self.lastOwner = nil
   
@@ -130,8 +131,9 @@ end
 function Brick:onCollide( e )
   
   if e and e.category.isBrick then
-    e:applyPhysics( self.vD * 0.9, self.speed )
-    self:stop()
+    e:applyPhysics( self.vD * (1-self.bouncieness), self.speed )
+	self:applyPhysics( self.vD * -self.bouncieness, self.speed )
+    --self:stop()
   end
 
 end

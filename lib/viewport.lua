@@ -7,6 +7,7 @@ function Viewport:initialize( viewArea, map, tileset, init )
   self.viewArea = viewArea
   self.map = map
   self.tilemap = Tilemap:new(tileset, viewArea.vSize)
+  self.dstSize = nil
   
   self.scrollBorder = 100
   self.followSelector = nil
@@ -14,6 +15,7 @@ function Viewport:initialize( viewArea, map, tileset, init )
   if init then
     self.scrollBorder = init.scrollBorder or self.scrollBorder
     self.followSelector = init.followSelector or self.followSelector
+	  self.dstSize = init.dstSize or nil
   end
 end
 
@@ -38,13 +40,23 @@ function Viewport:pop()
     love.graphics.pop()
 end
 
-
 function Viewport:draw()
+	if self.dstSize then
+		love.graphics.push()
+		love.graphics.scale( self.dstSize.x / self.viewArea.vSize.x, self.dstSize.y / self.viewArea.vSize.y )
+	end
+	
+	print(self.viewArea.vO)
+	
     self.tilemap:draw(self.viewArea.vO)
 
     self:push()
     self.map:drawEntities(self.viewArea)
     self:pop()
+	
+	if self.dstSize then
+		love.graphics.pop()
+	end
 end
 
 function Viewport:update(dt)

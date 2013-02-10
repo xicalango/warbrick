@@ -44,6 +44,8 @@ function InGame:onStateChange(oldState, params)
     self.viewContainer.backgroundColor = {32,74,135}
     
     self.viewportContainer = ViewContainer:new( 675, 585 )
+
+	self.bbox = area( 0, 0, 1350, 1170 )
     
     self.viewports = {
       
@@ -52,10 +54,19 @@ function InGame:onStateChange(oldState, params)
       --self:createViewportFor( self.players[3], 327, 282 ),
       --self:createViewportFor( self.players[4], 327, 282 )
       
-      self:createGlobalViewport( 675, 585 )
+	  Viewport:new( 
+      self.bbox, 
+      self.map, self.tileset, 
+      { dstSize = v2(675, 585) } 
+		)
+	  
+      --self:createGlobalViewport( 675, 585 )
     }
+	
     
-    self.viewportContainer:add( "vp1", self.viewports[1], 0, 0, 0, 675, 585 )
+    self.viewportContainer:add( "vpg", self.viewports[1], 0, 0, 0, 675, 585 )
+	
+    --self.viewportContainer:add( "vp1", self.viewports[1], 0, 0, 0, 327, 282 )
     --self.viewportContainer:add( "vp2", self.viewports[2], 337, 0, 0, 327, 282 )
     --self.viewportContainer:add( "vp3", self.viewports[3], 0, 292, 0, 327, 282 )
     --self.viewportContainer:add( "vp4", self.viewports[4], 337, 292, 0, 327, 282 )
@@ -74,6 +85,32 @@ function InGame:draw()
 end
 
 function InGame:update(dt)
+
+--[[
+  local minX, minY, maxX, maxY = self.bbox:getPoints()
+  minX = (maxX + minX) / 2
+  maxX = minX
+  minY = (maxY + minY) / 2
+  maxY = minY
+
+  for i,p in ipairs(self.players) do
+    if p.vC.x < minX then
+      minX = p.vC.x
+    end
+      if p.vC.x > maxX then
+      maxX = p.vC.x
+    end
+      if p.vC.y < minY then
+      minY = p.vC.y
+    end
+      if p.vC.y > maxY then
+      maxY = p.vC.y
+    end
+  end
+  
+  self.bbox:setPoints( minX - 90, minY - 90, maxX + 90, maxY + 90 )
+  ]]
+
   for i,vp in ipairs(self.viewports) do
     vp:update(dt)
   end

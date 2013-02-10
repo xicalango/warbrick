@@ -114,6 +114,18 @@ function Area:__tostring()
   return "Area( " .. tostring(self.vO) .. ", " .. tostring(self.vSize) .. ")"
 end
 
+function Area:getPoints()
+  return self.vO.x, self.vO.y, self.vO.x + self.vSize.x, self.vO.y + self.vSize.y
+end
+
+function Area:setPoints(x1,y1,x2,y2)
+  self.vO.x = x1
+  self.vO.y = y1
+  self.vSize.x = x2-x1
+  self.vSize.y = y2-y1
+  print(self)
+end
+
 function Area:move( vDispl )
   self.vO = self.vO + vDispl
 end
@@ -152,6 +164,13 @@ function Area:intersects( vTest )
   return fastRectangleIntersectTest(
      self.vO.x,  self.vO.y,  self.vO.x +  self.vSize.x,  self.vO.y +  self.vSize.y,
     vTest.vO.x, vTest.vO.y, vTest.vO.x + vTest.vSize.x, vTest.vO.y + vTest.vSize.y
+    )
+end
+
+function Area:fastIntersects( r1x, r1y, r2x, r2y )
+  return fastRectangleIntersectTest(
+     self.vO.x,  self.vO.y,  self.vO.x +  self.vSize.x,  self.vO.y +  self.vSize.y,
+    r1x, r1y, r2x, r2y
     )
 end
 
