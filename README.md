@@ -14,26 +14,26 @@ Controls
 Player 1
 --------
 
-wasd - walk
-tab - pickup/throw
+- wasd - walk
+- tab - pickup/throw
 
 Player 2
 --------
 
-arrowkeys - walk
-shift - pickup/throw
+- arrowkeys - walk
+- shift - pickup/throw
 
 Player 3
 --------
 
-ijkl - walk
-tab - pickup/throw
+- ijkl - walk
+- tab - pickup/throw
 
 Player 4
 --------
 
-tfgh - walk
-shift - pickup/throw
+- tfgh - walk
+- shift - pickup/throw
 
 Adding more players
 ==================
