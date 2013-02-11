@@ -28,13 +28,19 @@ end
 
 
 function InGame:onStateChange(oldState, params)
-  if not oldState or oldState == "ingame" then
-    self.map = Map:new(params[1])
+  if not oldState or oldState == "ingame" or oldState == "gameover" then
+    
+    self.endGame = false
+    self.fadeOutTime = 1
+    
+    self.startParams = params
+    
+    self.map = Map:new(params.mapid)
     self.players = {}
     
     gameManager = GameManager:new( self.map, self.players )
     
-    for i = 1, params[2] do
+    for i = 1, params.numPlayers do
       gameManager:newPlayer( i )
     end
     
@@ -45,7 +51,7 @@ function InGame:onStateChange(oldState, params)
     
     self.viewportContainer = ViewContainer:new( 675, 585 )
 
-	self.bbox = area( 0, 0, 1350, 1170 )
+	--self.bbox = area( 0, 0, 1350, 1170 )
     
     self.viewports = {
       
@@ -53,14 +59,14 @@ function InGame:onStateChange(oldState, params)
       --self:createViewportFor( self.players[2], 327, 282 ),
       --self:createViewportFor( self.players[3], 327, 282 ),
       --self:createViewportFor( self.players[4], 327, 282 )
-      
+    --[[  
 	  Viewport:new( 
       self.bbox, 
       self.map, self.tileset, 
       { dstSize = v2(675, 585) } 
 		)
-	  
-      --self:createGlobalViewport( 675, 585 )
+	  ]]
+      self:createGlobalViewport( 675, 585 )
     }
 	
     
@@ -116,6 +122,12 @@ function InGame:update(dt)
   end
   
   self.map:update(dt)
+  
+  local livingPlayers = self.map:findEntities( ffAnd( ffPlayers, function(e) return e.lives > 0 end) )
+  if #livingPlayers <= 1 then
+    gameStateManager:change( "gameover", { players = self.players, winPlayer = livingPlayers[1], startParams = self.startParams })
+  end
+  
 end
 
 function InGame:keypressed(key)

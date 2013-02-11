@@ -39,7 +39,7 @@ function love.load()
   
   gameStateManager = GameStateManager:new()
   gameStateManager:loadFolder( "states" )
-  gameStateManager:change( "ingame", "level2", 4 )
+  gameStateManager:change( "ingame", {mapid = "level1", numPlayers = 2} )
 end
 
 function love.draw()
@@ -56,7 +56,8 @@ function love.keypressed(key)
 		love.event.push("quit")
     return
   elseif key == "f11" then
-    gameStateManager:change( "ingame", "level1", 2 )
+    gameStateManager:change( "ingame", {mapid = "level1", numPlayers = 2} )
+    return
   elseif key == "f5" then
     love.graphics.toggleFullscreen()
     return

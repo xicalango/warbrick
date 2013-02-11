@@ -46,8 +46,6 @@ function Viewport:draw()
 		love.graphics.scale( self.dstSize.x / self.viewArea.vSize.x, self.dstSize.y / self.viewArea.vSize.y )
 	end
 	
-	print(self.viewArea.vO)
-	
     self.tilemap:draw(self.viewArea.vO)
 
     self:push()
@@ -60,8 +58,6 @@ function Viewport:draw()
 end
 
 function Viewport:update(dt)
-  
-  --print(self.viewArea)
   
   if self.followSelector then
     

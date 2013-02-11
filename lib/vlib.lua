@@ -123,7 +123,6 @@ function Area:setPoints(x1,y1,x2,y2)
   self.vO.y = y1
   self.vSize.x = x2-x1
   self.vSize.y = y2-y1
-  print(self)
 end
 
 function Area:move( vDispl )

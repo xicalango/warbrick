@@ -98,6 +98,10 @@ function Map:update(dt)
   
   for i,v in ipairs(self.entities) do
     v:update(dt)
+    
+    if not v.onMap then
+      table.remove(self.entities, i)
+    end
   end
   
 end

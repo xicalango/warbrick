@@ -66,9 +66,9 @@ end
 -- State will be changed on next call to GameState:update
 -- Calls onStateChange with the old state. When this method returns false, the state is not changed.
 --]]
-function GameStateManager:change( name, ... )
+function GameStateManager:change( name, params )
     self.newState = name 
-    self.activationParams = {...}
+    self.activationParams = params
 end
 
 function GameStateManager:_changeState(name)

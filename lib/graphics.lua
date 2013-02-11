@@ -32,7 +32,8 @@ function AbstractGraphics:setMouseView()
   self.rotationFn = love.mouse.getPosition
 end
 
-function AbstractGraphics:draw( v2Coor, pars )
+function AbstractGraphics:fastDraw( x, y, pars )
+  
   local v2Dir = nil
   
   local tintOverride = self.tintOverride
@@ -56,8 +57,8 @@ function AbstractGraphics:draw( v2Coor, pars )
     phi = v2Dir:angle(v2Coor) 
   end
   
-  local xoff = v2Coor.x + self.offset[1]
-  local yoff = v2Coor.y + self.offset[2]
+  local xoff = x + self.offset[1]
+  local yoff = y + self.offset[2]
   
   util.preserveColor( function()
       
@@ -68,10 +69,8 @@ function AbstractGraphics:draw( v2Coor, pars )
       end
       
       self:_draw{
-        
-          [v2Coor] = v2Coor,
-          x = v2Coor.x,
-          y = v2Coor.y,
+          x = x,
+          y = y,
           [phi] = phi,
           xoff = xoff,
           yoff = yoff,
@@ -84,6 +83,11 @@ function AbstractGraphics:draw( v2Coor, pars )
         }
     end)
   
+end
+
+
+function AbstractGraphics:draw( v2Coor, pars )
+  self:fastDraw( v2Coor.x, v2Coor.y, pars )
 end
 
 function AbstractGraphics:update(dt)

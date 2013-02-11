@@ -6,7 +6,7 @@ Brick.static.states = {
   ONGROUND = 0,
   CARRIED = 1,
   FLYING = 2,
-  SLIDING = 3
+  EXPLODING = 3
 }
 
 function Brick:initialize( v0 )
@@ -27,7 +27,7 @@ function Brick:initialize( v0 )
   self.friction = 1.5
   self.bouncieness = 0.1
   
-  self.lastOwner = nil
+  self.owner = nil
   
 end
 
@@ -45,7 +45,7 @@ end
 function Brick:deattach( e )
   self:attachAt()
   
-  self.lastOwner = e
+  self.owner = e
 
   if e.vD:normsq() < 0.01 then
     self.state = Brick.static.states.ONGROUND
@@ -75,8 +75,8 @@ end
 function Brick:setTint()
   if self.selected then
     self.graphics.tintOverride = {64, 255, 64}
-  elseif self.lastOwner then
-    self.graphics.tintOverride = self.lastOwner.graphics.tint
+  elseif self.owner then
+    self.graphics.tintOverride = self.owner.graphics.tint
   else
     self.graphics.tintOverride = nil
   end
@@ -91,15 +91,15 @@ function Brick:onStop()
 end
 
 function Brick:update(dt)
-  if self.gotHit then print(self.vC, self.vD) end
   
   if self.state == Brick.static.states.FLYING then
-    for _,p in gameManager:iFindEntities( ffAnd( ffPlayers, function(e) return e ~= self.lastOwner end ) ) do
+    for _,p in gameManager:iFindEntities( ffAnd( ffPlayers, function(e) return e ~= self.owner end ) ) do
         if self:collidesEntity(p) then
           self:stop()
+          --self:removeFromMap()
           p:stop()
           p:hit()
-          self.lastOwner = p
+          self.owner = p
           break
         end
     end
@@ -111,7 +111,7 @@ end
 
 function Brick:blocks(e)
   
-  if e.category.isPlayer and e == self.lastOwner then 
+  if e.category.isPlayer and e == self.owner then 
     return false
   end
   
@@ -119,7 +119,7 @@ function Brick:blocks(e)
   if self.state == Brick.static.states.CARRIED then return false end
   
   if self.state == Brick.static.states.FLYING then
-    if e.category.isPlayer and e ~= self.lastOwner then 
+    if e.category.isPlayer and e ~= self.owner then 
       return true
     end
   end

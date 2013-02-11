@@ -188,13 +188,13 @@ function Player:draw()
 end
 
 function Player:hit()
-  
-  self.graphics.tintOverride = {255,0,0}
+  self.graphics.tintOverride = {255, 0, 0}
   
   self:addTimer( "nored", 1, function() self.graphics.tintOverride = nil end )
     
   self.lives = self.lives - 1
   
+  if self.lives == 0 then
+    self:removeFromMap()
+  end
 end
-
-
