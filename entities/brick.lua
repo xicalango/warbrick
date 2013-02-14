@@ -93,6 +93,7 @@ end
 function Brick:update(dt)
   
   if self.state == Brick.static.states.FLYING then
+    
     for _,p in gameManager:iFindEntities( ffAnd( ffPlayers, function(e) return e ~= self.owner end ) ) do
         if self:collidesEntity(p) then
           self:stop()
@@ -132,7 +133,7 @@ function Brick:onCollide( e )
   
   if e and e.category.isBrick then
     e:applyPhysics( self.vD * (1-self.bouncieness), self.speed )
-	self:applyPhysics( self.vD * -self.bouncieness, self.speed )
+	  self:applyPhysics( self.vD * -self.bouncieness, self.speed )
     --self:stop()
   end
 

@@ -39,7 +39,7 @@ function love.load()
   
   gameStateManager = GameStateManager:new()
   gameStateManager:loadFolder( "states" )
-  gameStateManager:change( "ingame", {mapid = "level1", numPlayers = 2} )
+  gameStateManager:change( "ingame", {mapid = "level1_3", numPlayers = 3} )
 end
 
 function love.draw()

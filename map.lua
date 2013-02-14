@@ -33,35 +33,37 @@ function Map:_buildMap()
     local infoLine = {}
     
     for x = 1, self.width do
-      
       line[x] = string.sub( self.def.map[y], x, x )
+
       local def = tileDefs[line[x]]
+      infoLine[x] = def
       
-      if def.type == "tile" then
-        infoLine[x] = def
-      elseif def.type == "brick" then
-        line[x] = "."
-        infoLine[x] = tileDefs[" "]
-        
+      if def.type == "brick" then
         table.insert(bricks, {self:mapPos( x, y )})
-        
       elseif def.type == "startPos" then
-        line[x] = " "
-        infoLine[x] = tileDefs[" "]
-        
         self.startPositions[def.playerNumber] = {self:mapPos( x, y )}
-      else
       end
-    
-      if line[x] == " " then
-          
-        if self.map[y-1][x] == "#" then
-          line[x] = "'"
+	  
+      if def.background then
+        line[x] = def.background
+      end
+      
+      if def.replaceDef then
+        infoLine[x] = tileDefs[def.replaceDef]
+      end
+      
+      local backgroundDef = tileDefs[line[x]]
+      
+      if backgroundDef and backgroundDef.shaded then
+            
+        if self.map[y-1][x] == backgroundDef.shaded[1] then
+          line[x] = backgroundDef.shaded[2]
         end
-          
+            
       end
       
-      
+        
+        
     end
     
     self.map[y] = line
@@ -84,7 +86,11 @@ end
 function Map:isWallForEntity( e )
   local r1x, r1y, r2x, r2y = e:fastGetHitRectangle()
 
-  if self:isWall(r1x,r1y) or self:isWall(r2x,r2y) then return true end
+  if self:isWall(r1x,r1y) 
+    or self:isWall(r2x,r1y) 
+    or self:isWall(r1x,r2y) 
+    or self:isWall(r2x,r2y) 
+  then return true end
     
   for _,b in self:iFindEntities( function(ee) return ee ~= e and ee:blocks(e) end) do
     if e:collidesEntity(b) then return true, b end
@@ -116,7 +122,7 @@ function Map:drawEntities(viewArea)
 end
 
 function Map:tilePos( mapX, mapY )
-  return math.floor(mapX/45) + 1, math.floor(mapY/45) + 1
+  return math.floor(mapX/45)+1 , math.floor(mapY/45) +1
 end
 
 
