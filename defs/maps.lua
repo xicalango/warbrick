@@ -4,6 +4,10 @@ local maps = {
   
   level1 = {
     
+	settings = {
+    viewport = "global"
+	},
+	
     size = {15, 13},
     
     map = {

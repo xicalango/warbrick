@@ -55,10 +55,10 @@ function InGame:onStateChange(oldState, params)
     
     self.viewports = {
       
-      --self:createViewportFor( self.players[1], 327, 282 ),
-      --self:createViewportFor( self.players[2], 327, 282 ),
-      --self:createViewportFor( self.players[3], 327, 282 ),
-      --self:createViewportFor( self.players[4], 327, 282 )
+      self:createViewportFor( self.players[1], 327, 282 ),
+      self:createViewportFor( self.players[2], 327, 282 ),
+      self:createViewportFor( self.players[3], 327, 282 ),
+      self:createViewportFor( self.players[4], 327, 282 )
     --[[  
 	  Viewport:new( 
       self.bbox, 
@@ -66,16 +66,16 @@ function InGame:onStateChange(oldState, params)
       { dstSize = v2(675, 585) } 
 		)
 	  ]]
-      self:createGlobalViewport( 675, 585 )
+      --self:createGlobalViewport( 675, 585 )
     }
 	
     
-    self.viewportContainer:add( "vpg", self.viewports[1], 0, 0, 0, 675, 585 )
+    --self.viewportContainer:add( "vpg", self.viewports[1], 0, 0, 0, 675, 585 )
 	
-    --self.viewportContainer:add( "vp1", self.viewports[1], 0, 0, 0, 327, 282 )
-    --self.viewportContainer:add( "vp2", self.viewports[2], 337, 0, 0, 327, 282 )
-    --self.viewportContainer:add( "vp3", self.viewports[3], 0, 292, 0, 327, 282 )
-    --self.viewportContainer:add( "vp4", self.viewports[4], 337, 292, 0, 327, 282 )
+    self.viewportContainer:add( "vp1", self.viewports[1], 0, 0, 0, 327, 282 )
+    self.viewportContainer:add( "vp2", self.viewports[2], 337, 0, 0, 327, 282 )
+    self.viewportContainer:add( "vp3", self.viewports[3], 0, 292, 0, 327, 282 )
+    self.viewportContainer:add( "vp4", self.viewports[4], 337, 292, 0, 327, 282 )
     
     self.viewContainer:add( "viewports", self.viewportContainer, 10, 7, 0, 675, 585 )
     

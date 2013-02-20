@@ -3,7 +3,7 @@ return {
   {
     id = "player1",
     type = "image",
-    offset = {14, 22},
+    offset = {18, 22},
     image = "$playerCharacter",
     tint = {127,127,255}
   },
@@ -11,7 +11,7 @@ return {
   {
     id = "player2",
     type = "image",
-    offset = {14, 22},
+    offset = {18, 22},
     image = "$playerCharacter",
     tint = {255,127,255}
   },
@@ -19,7 +19,7 @@ return {
   {
     id = "player3",
     type = "image",
-    offset = {14, 22},
+    offset = {18, 22},
     image = "$playerCharacter",
     tint = {255,255,0}
   },
@@ -27,7 +27,7 @@ return {
   {
     id = "player4",
     type = "image",
-    offset = {14, 22},
+    offset = {18, 22},
     image = "$playerCharacter",
     tint = {0,255,255}
   },
