@@ -77,6 +77,7 @@ function Map:_buildMap()
   
 end
 
+
 function Map:isWall( x, y )
   local tileX, tileY = self:tilePos( x, y )
   

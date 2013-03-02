@@ -63,7 +63,7 @@ function love.keypressed(key)
 
   if key == "f12" then
 		love.event.push("quit")
-    return
+    return  
   elseif key == "f11" then
     gameStateManager:change( "mainmenu" )
     return

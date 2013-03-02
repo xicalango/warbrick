@@ -52,25 +52,31 @@ function InGame:onStateChange(oldState, params)
     self.viewportContainer = ViewContainer:new( 675, 585 )
 
 	--self.bbox = area( 0, 0, 1350, 1170 )
-    
-    self.viewports = {
+  
+    self.viewports = {}
+  
+    if self.map.def.settings.viewport == "global" then
+      local vp = self:createGlobalViewport( 675, 585 )
       
-      --self:createViewportFor( self.players[1], 327, 282 ),
-      --self:createViewportFor( self.players[2], 327, 282 ),
-      --self:createViewportFor( self.players[3], 327, 282 ),
-      --self:createViewportFor( self.players[4], 327, 282 )
-    --[[  
-	  Viewport:new( 
-      self.bbox, 
-      self.map, self.tileset, 
-      { dstSize = v2(675, 585) } 
-		)
-	  ]]
-      self:createGlobalViewport( 675, 585 )
-    }
-	
+      table.insert( self.viewports, vp )
+      self.viewportContainer:add( "vpg", vp, 0, 0, 0, 675, 585 )
+    elseif self.map.def.settings.viewport == "single" then
+      
+      for i,v in ipairs(self.players) do
+        local vp = self:createViewportFor(v, 327, 282 )
+        table.insert(self.viewports, vp )
+        
+        local row = math.floor((i-1)/2)
+        local col = math.floor((i-1)%2)
+        
+        self.viewportContainer:add( "vp" .. i, vp, 337 * col, 292 * row, 0, 327, 282 )
+        
+      end
+      
+    end
+    	
     
-    self.viewportContainer:add( "vpg", self.viewports[1], 0, 0, 0, 675, 585 )
+    
 	
     --self.viewportContainer:add( "vp1", self.viewports[1], 0, 0, 0, 327, 282 )
     --self.viewportContainer:add( "vp2", self.viewports[2], 337, 0, 0, 327, 282 )

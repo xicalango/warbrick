@@ -32,6 +32,10 @@ local maps = {
     
     size = {15, 13},
     
+    settings = {
+      viewport = "global"
+    },
+    
     map = {
       "###############",
       "#1           3#",
@@ -53,6 +57,10 @@ local maps = {
   level1_2 = {
     
     size = {15, 13},
+    
+    settings = {
+      viewport = "global"
+    },
     
     map = {
       "###############",
@@ -76,6 +84,10 @@ local maps = {
     
     size = {15, 13},
     
+    settings = {
+      viewport = "global"
+    },
+    
     map = {
       "###############",
       "#1000000000003#",
@@ -97,6 +109,10 @@ local maps = {
   level1_4 = {
     
     size = {15, 13},
+    
+    settings = {
+      viewport = "global"
+    },
     
     map = {
       "###############",
@@ -120,6 +136,10 @@ local maps = {
   level2 = {
     
     size = {29, 25},
+    
+    settings = {
+      viewport = "single"
+    },
     
     map = {
       "#############################",
