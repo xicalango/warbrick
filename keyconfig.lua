@@ -6,28 +6,32 @@ keyconfig = {
     down = {"s"},
     left = {"a"},
     right = {"d"},
-    action = {"tab"}
+    action = {"tab"},
+    action2 = {"1"}
   },
   {
     up = {"up"},
     down = {"down"},
     left = {"left"},
     right = {"right"},
-    action = {"rshift"}
+    action = {"rshift"},
+    action2 = {"-"}
   },
   {
     up = {"i"},
     down = {"k"},
     left = {"j"},
     right = {"l"},
-    action = {"o"}
+    action = {"o"},
+    action2 = {"p"}
   },
   {
     up = {"t"},
     down = {"g"},
     left = {"f"},
     right = {"h"},
-    action = {" "}
+    action = {" "},
+    action2 = {"n"}
   }
 
   }

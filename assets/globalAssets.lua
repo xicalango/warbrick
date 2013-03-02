@@ -1,6 +1,13 @@
 return {
   
   {
+    id = "mainMenuBackground",
+    type = "image",
+    offset = {0,0},
+    image = "$titleScreen"
+  },
+  
+  {
     id = "player1",
     type = "image",
     offset = {18, 22},

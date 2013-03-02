@@ -31,12 +31,15 @@ function GameOver:draw()
   end
 
   love.graphics.print( "To restart please press [Enter]", 400, 400 )
+  love.graphics.print( "To return to main menu please press [ESC]", 400, 420 )
 
 end
 
 function GameOver:keypressed( key )
   if key == "return" then
     gameStateManager:change( "ingame", self.startParams )
+  elseif key == "escape" then
+    gameStateManager:change( "mainmenu" )
   end
 end
   

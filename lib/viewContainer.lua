@@ -18,6 +18,12 @@ function ViewContainer:initialize( w, h )
   self.borderColor = {0,0,0,0}
 end
 
+function ViewContainer:setVisible( id, visible )
+  if not self.components[id] then error( "No such component: " .. id ) end
+  self.components[id].visible = visible
+end
+
+
 function ViewContainer:add( id, component, x, y, z, w, h )
   
   self.components[id] = {

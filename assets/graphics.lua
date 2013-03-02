@@ -4,6 +4,7 @@ return {
   
   standardBrick = "assets/brick.png",
   playerCharacter = "assets/Player.png",
-  dropshadow = "assets/dropshadow.png"
+  dropshadow = "assets/dropshadow.png",
+  titleScreen = "assets/TitleScreen.png"
   
 }

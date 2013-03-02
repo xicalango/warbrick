@@ -28,7 +28,7 @@ end
 
 
 function InGame:onStateChange(oldState, params)
-  if not oldState or oldState == "ingame" or oldState == "gameover" then
+  if not oldState or oldState == "ingame" or oldState == "gameover" or oldState == "mainmenu" then
     
     self.endGame = false
     self.fadeOutTime = 1

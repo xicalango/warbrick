@@ -62,7 +62,7 @@ function love.keypressed(key)
 		love.event.push("quit")
     return
   elseif key == "f11" then
-    gameStateManager:change( "ingame", {mapid = "level2", numPlayers = 4} )
+    gameStateManager:change( "mainmenu" )
     return
   elseif key == "f5" then
     love.graphics.toggleFullscreen()
