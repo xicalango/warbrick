@@ -67,8 +67,12 @@ end
 -- Calls onStateChange with the old state. When this method returns false, the state is not changed.
 --]]
 function GameStateManager:change( name, params )
+  if not self.states[name] then
+    error("no such state: " .. name )
+  end
+  
     self.newState = name 
-    self.activationParams = params
+    self.activationParams = params or {}
 end
 
 function GameStateManager:_changeState(name)

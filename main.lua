@@ -12,6 +12,7 @@ require("lib/assetManager")
 require("lib/viewContainer")
 require("lib/tileset")
 require("lib/viewport")
+require("lib/menu")
 
 require("entities/entity")
 require("entities/player")
@@ -30,6 +31,10 @@ function love.load()
   
   startTime = love.timer.getMicroTime( )
   
+  if love.graphics.getFont()==nil then
+    love.graphics.setFont(love.graphics.newFont(12))
+  end
+  
   local graphicsPreloader = GraphicsPreloader:new("assets")
   graphicsPreloader:loadFile("graphics.lua")
   
@@ -39,7 +44,8 @@ function love.load()
   
   gameStateManager = GameStateManager:new()
   gameStateManager:loadFolder( "states" )
-  gameStateManager:change( "ingame", {mapid = "level1_4", numPlayers = 4} )
+  gameStateManager:change( "mainmenu" )
+  --gameStateManager:change( "ingame", {mapid = "level1_4", numPlayers = 4} )
 end
 
 function love.draw()

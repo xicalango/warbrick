@@ -14,13 +14,15 @@ function ViewContainer:initialize( w, h )
   self.height = h or love.graphics.getHeight()
   
   self.backgroundColor = {0,0,0,0}
+  
+  self.borderColor = {0,0,0,0}
 end
 
 function ViewContainer:add( id, component, x, y, z, w, h )
   
   self.components[id] = {
     id = id,
-	canvas = love.graphics.newCanvas( w, h ),
+	  canvas = love.graphics.newCanvas( w, h ),
     x = x or 0,
     y = y or 0,
     z = z or 0,
@@ -52,20 +54,21 @@ function ViewContainer:draw()
   for i,v in ipairs(drawComponents) do
     local parentCanvas = love.graphics.getCanvas()
     
-	v.canvas:clear()
+	  v.canvas:clear()
     love.graphics.setCanvas( v.canvas )
     v.component:draw()
     love.graphics.setCanvas( parentCanvas )
     
     love.graphics.draw( v.canvas, v.x, v.y )
     
-	--[[
-    util.preserveColor(function()
-        love.graphics.setColor{255,0,0}
-        love.graphics.print( v.id, v.x + 5, v.y + 5 )
-        love.graphics.rectangle("line", v.x, v.y, v.w, v.h)
-    end)
-	]]
+    if self.borderColor ~= {0,0,0,0} then
+      util.preserveColor(function()
+          love.graphics.setColor(self.borderColor)
+          --love.graphics.print( v.id, v.x + 5, v.y + 5 )
+          love.graphics.rectangle("line", v.x, v.y, v.w, v.h)
+      end)
+    end
+    
   end
   
   
