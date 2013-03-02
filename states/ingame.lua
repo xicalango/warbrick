@@ -76,13 +76,6 @@ function InGame:onStateChange(oldState, params)
     end
     	
     
-    
-	
-    --self.viewportContainer:add( "vp1", self.viewports[1], 0, 0, 0, 327, 282 )
-    --self.viewportContainer:add( "vp2", self.viewports[2], 337, 0, 0, 327, 282 )
-    --self.viewportContainer:add( "vp3", self.viewports[3], 0, 292, 0, 327, 282 )
-    --self.viewportContainer:add( "vp4", self.viewports[4], 337, 292, 0, 327, 282 )
-    
     self.viewContainer:add( "viewports", self.viewportContainer, 10, 7, 0, 675, 585 )
     
     self.viewContainer:add( "gui", self.gui, 700, 7, 0, 95, 585 )
