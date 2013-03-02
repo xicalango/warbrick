@@ -20,6 +20,8 @@ function Menu:initialize( width, height, selectCallback, onChangeCallback )
   self.offset = 0
   
   self.padding = {left = 10, top = 10, font = 5}
+  
+  self.selectedBorder = false
 end
 
 function Menu:addItem( id, title )
@@ -35,6 +37,12 @@ end
 function Menu:selectFirstItem()
   if #self.items > 0 then
     self.selectedItem = 1
+  end
+end
+
+function Menu:fireOnChange()
+  if self.onChangeCallback then
+    self.onChangeCallback( self.selectedItem, self.items[self.selectedItem] )
   end
 end
 
@@ -69,7 +77,9 @@ function Menu:draw()
         if itemIdx == self.selectedItem then
           love.graphics.setColor( self.highlightColor )
           
-          love.graphics.rectangle( "line", self.padding.left / 2, self.padding.top + (i-1) * (fontHeight + self.padding.font), self.width - self.padding.left, fontHeight )
+          if self.selectedBorder then
+            love.graphics.rectangle( "line", self.padding.left / 2, self.padding.top + (i-1) * (fontHeight + self.padding.font), self.width - self.padding.left, fontHeight )
+          end
           
         else
           love.graphics.setColor( self.textColor )

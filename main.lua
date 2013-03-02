@@ -14,11 +14,14 @@ require("lib/tileset")
 require("lib/viewport")
 require("lib/menu")
 
+
 require("entities/entity")
 require("entities/player")
 require("entities/brick")
 
 require("gameManager")
+
+require("smallMapRenderer")
 
 require("map")
 require("gui")
