@@ -12,8 +12,8 @@ function Player:initialize( vO, number )
   self.graphics = assetManager:create("player" .. number)
   self.dropshadow = assetManager:create("dropshadow")
   
-  self.hitbox.left = 15
-  self.hitbox.right = 15
+  self.hitbox.left = 17
+  self.hitbox.right = 17
   self.hitbox.top = 20
   self.hitbox.bottom = 20
   
