@@ -38,6 +38,8 @@ function ViewContainer:add( id, component, x, y, z, w, h )
     component = component
     }
   
+  table.sort(self.components, ViewContainer.static._zSort)
+  
 end
 
 function ViewContainer:draw()
@@ -47,22 +49,16 @@ function ViewContainer:draw()
     love.graphics.rectangle("fill",0,0, self.width, self.height)
   end)
   
-  local drawComponents = {}
-  
-  for k,v in pairs(self.components) do
-    if v.visible then
-      table.insert(drawComponents, v)
-    end
-  end
-  
-  table.sort(drawComponents, ViewContainer.static._zSort)
-  
+  local drawComponents = util.filter( self.components, function(v) return v.visible end )
+  local parentCanvas = love.graphics.getCanvas()
+    
   for i,v in ipairs(drawComponents) do
-    local parentCanvas = love.graphics.getCanvas()
     
 	  v.canvas:clear()
     love.graphics.setCanvas( v.canvas )
+    
     v.component:draw()
+    
     love.graphics.setCanvas( parentCanvas )
     
     love.graphics.draw( v.canvas, v.x, v.y )

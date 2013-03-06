@@ -84,6 +84,17 @@ function util.capitalize(word)
         )
 end
 
+function util.getElementKey( tbl, e )
+  for k, v in pairs(tbl) do
+    if v == e then
+      return k
+    end
+  end
+  
+  return nil
+end
+
+
 function util.filter(tbl, filter)
     local result = {}
     
@@ -107,7 +118,7 @@ function util.map(tbl, fn)
 end
 
 function util.any(tbl, fn)
-	for _,v in ipairs(tbl) do
+	for _,v in pairs(tbl) do
 		if fn(v) then return true end
 	end
 	
@@ -115,7 +126,7 @@ function util.any(tbl, fn)
 end
 
 function util.all(tbl, fn)
-	for _,v in ipairs(tbl) do
+	for _,v in pairs(tbl) do
 		if not fn(v) then return false end
 	end
 	

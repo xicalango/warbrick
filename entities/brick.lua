@@ -36,7 +36,8 @@ function Brick:selectable()
 end
 
 function Brick:attach( e )
-  self:attachAt(e)
+  self:attachAt(e, 0, -10)
+  self.z = e.z + 1
   self.state = Brick.static.states.CARRIED
   
   self.graphics.tintOverride = e.graphics.tint

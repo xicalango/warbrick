@@ -2,8 +2,10 @@
 
 Entity = class("Entity")
 
-function Entity:initialize( v0 )
+function Entity:initialize( v0, z )
   self.vC = v0 or v2(0,0)
+  
+  self.z = z or 1
   
   self.speed = 100
   

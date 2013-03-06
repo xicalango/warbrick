@@ -12,6 +12,8 @@ function Map:initialize(mapName)
   
   self.entities = {}
   
+  self.entitiesZ = {}
+  
   self:_buildMap()
   
   
@@ -104,22 +106,44 @@ end
 function Map:update(dt)
   
   for i,v in ipairs(self.entities) do
+    local oldZ = v.z
+    
     v:update(dt)
     
     if not v.onMap then
       table.remove(self.entities, i)
+    else
+      self:updateZ( v, oldZ )
     end
+    
+    
   end
   
 end
 
+function Map:updateZ( e, oldZ ) 
+  if oldZ and self.entitiesZ[oldZ] then
+    table.remove( self.entitiesZ[oldZ], util.getElementKey( self.entitiesZ[oldZ], e ) )
+  end
+  
+  if not self.entitiesZ[e.z] then
+    self.entitiesZ[e.z] = {}
+  end
+  
+  table.insert(self.entitiesZ[e.z], e)
+end
+
 
 function Map:drawEntities(viewArea)  
-  for i,v in ipairs(self.entities) do
-    if viewArea:fastIntersects( v:fastGetHitRectangle() ) then
-      v:draw()
+  
+  for _,t in ipairs(self.entitiesZ) do
+    for i,v in ipairs(t) do
+      if viewArea:fastIntersects( v:fastGetHitRectangle() ) then
+        v:draw()
+      end
     end
   end
+  
 end
 
 function Map:tilePos( mapX, mapY )
@@ -133,7 +157,11 @@ end
 
 function Map:addEntity( e )
   table.insert(self.entities, e)
+  
+  self:updateZ( e )
 end
+
+
 
 function Map:findEntities( predicateFn )
   return util.filter( self.entities, predicateFn )
