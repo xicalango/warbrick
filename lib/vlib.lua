@@ -32,6 +32,11 @@ function Vector2D:__mul( s )
   return v2( self.x * s, self.y * s )
 end
 
+function Vector2D:mul( s )
+  self.x = self.x * s
+  self.y = self.y * s
+end
+
 function Vector2D:__tostring( )
   return "V2(" .. self.x .. ", " .. self.y .. ")"
 end
@@ -66,12 +71,21 @@ function Vector2D:set( x, y )
   self.y = y
 end
 
+function Vector2D:normalize( )
+  local norm = self:norm()
+  
+  if norm ~= 0 then
+    self.x = self.x/norm
+    self.y = self.y/norm
+  end
+end
+
 function Vector2D:normsq( )
   return self.x * self.x + self.y * self.y
 end
 
 function Vector2D:norm( )
-  return match.sqrt( self:normsq() )
+  return math.sqrt( self:normsq() )
 end
 
 function Vector2D:dst( o )

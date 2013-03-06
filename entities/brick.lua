@@ -45,7 +45,7 @@ end
 
 function Brick:deattach( e )
   self:attachAt()
-  
+  self.z = e.z 
   self.owner = e
 
   if e.vD:normsq() < 0.01 then
@@ -98,6 +98,7 @@ function Brick:update(dt)
     for _,p in gameManager:iFindEntities( ffAnd( ffPlayers, function(e) return e ~= self.owner end ) ) do
         if self:collidesEntity(p) then
           self:stop()
+          self:onBrickCollide( p, false )
           --self:removeFromMap()
           p:stop()
           p:hit()
@@ -134,11 +135,17 @@ function Brick:onCollide( e )
   
   if e and e.category.isBrick then
     e:applyPhysics( self.vD * (1-self.bouncieness), self.speed )
-	  self:applyPhysics( self.vD * -self.bouncieness, self.speed )
-    --self:stop()
+    self:applyPhysics( self.vD * -self.bouncieness, self.speed )
+    
+    e:onBrickCollide( self, true )
+    self:onBrickCollide( e, false ) 
   end
 
 end
+
+function Brick:onBrickCollide( e, wasKicked )
+end
+
 
 
 

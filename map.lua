@@ -41,7 +41,7 @@ function Map:_buildMap()
       infoLine[x] = def
       
       if def.type == "brick" then
-        table.insert(bricks, {self:mapPos( x, y )})
+        table.insert(bricks, {id = def.entityId, coor =  {self:mapPos( x, y )}} )
       elseif def.type == "startPos" then
         self.startPositions[def.playerNumber] = {self:mapPos( x, y )}
       end
@@ -73,7 +73,13 @@ function Map:_buildMap()
   end
   
   for i,b in ipairs(bricks) do
-    self:addEntity( Brick:new( v2t(b) ) )
+    
+    if b.id == "Brick" then
+      self:addEntity( Brick:new( v2t(b.coor) ) )
+    elseif b.id == "BrickBomb" then
+      self:addEntity( BrickBomb:new( v2t(b.coor) ) )
+    end
+   
   end
   
   
@@ -105,9 +111,9 @@ end
 
 function Map:update(dt)
   
+  self.entitiesZ = {}
+  
   for i,v in ipairs(self.entities) do
-    local oldZ = v.z
-    
     v:update(dt)
     
     if not v.onMap then
@@ -121,11 +127,8 @@ function Map:update(dt)
   
 end
 
-function Map:updateZ( e, oldZ ) 
-  if oldZ and self.entitiesZ[oldZ] then
-    table.remove( self.entitiesZ[oldZ], util.getElementKey( self.entitiesZ[oldZ], e ) )
-  end
-  
+
+function Map:updateZ( e ) 
   if not self.entitiesZ[e.z] then
     self.entitiesZ[e.z] = {}
   end

@@ -18,6 +18,7 @@ require("lib/menu")
 require("entities/entity")
 require("entities/player")
 require("entities/brick")
+require("entities/brickBomb")
 
 require("gameManager")
 

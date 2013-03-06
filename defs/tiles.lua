@@ -19,7 +19,15 @@ local tiledefs = {
 	    background = ".",
 	    replaceDef = " ",
       type = "brick",
-      entityId = "brick"
+      entityId = "Brick"
+    },
+    
+    ["B"] = {
+      name = "BrickBomb",
+	    background = ".",
+	    replaceDef = " ",
+      type = "brick",
+      entityId = "BrickBomb"
     },
     
     ["1"] = {

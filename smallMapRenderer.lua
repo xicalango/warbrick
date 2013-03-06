@@ -38,7 +38,12 @@ function SmallMapRenderer:drawCanvas(mapdef)
       util.preserveColor(function()
       
         if def.type == "brick" then
-          love.graphics.setColor( 255, 255, 0, 255 )
+          
+          if def.entityId == "Brick" then
+            love.graphics.setColor( 255, 255, 0, 255 )
+          elseif def.entityId == "BrickBomb" then
+            love.graphics.setColor( 255, 0, 0, 255 )
+          end
         elseif def.type == "startPos" then
           love.graphics.setColor( 0, 255, 0, 255 )
         elseif def.type == "tile" and def.walkable then

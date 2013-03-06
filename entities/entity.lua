@@ -46,6 +46,34 @@ function Entity:attachAt( e, ox, oy )
   self.attachedAt = { entity = e, offset = {ox or 0, oy or 0} }
 end
 
+function Entity:addAnimation( init ) 
+
+  init.parts = init.parts or 10
+  
+  local valueIncrement = (init.endValue-init.startValue)/init.parts
+  local timeInterval = init.time/init.parts
+  
+  local value = init.startValue
+  
+  self:addTimer( init.name, timeInterval, function(e)
+      
+      init.actionCallback(e, value)
+      
+      value = value + valueIncrement
+      if value >= init.endValue then
+        if init.endCallback then
+          init.endCallback(e, value)
+        end
+        return nil
+      else
+        return timeInterval
+      end
+  end, init.unit)
+  
+  
+end
+
+
 
 function Entity:addTimer( name, time, callback, unit )
 	self.timers[name] = {

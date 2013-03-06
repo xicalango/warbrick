@@ -17,7 +17,6 @@ function AssetManager:loadCallback( newAssets )
 end
 
 function AssetManager:create( id )
-  print(id)
   return self:_initAsset(self.assets[id])
 end
 
