@@ -195,9 +195,6 @@ function Entity:draw()
     --love.graphics.circle("line", self.vC.x, self.vC.y, 5)
   end
   
-  if self.attachedAt then
-    love.graphics.line( self.vC.x, self.vC.y, self.attachedAt.entity.vC.x, self.attachedAt.entity.vC.y )
-  end
   
 end
 
