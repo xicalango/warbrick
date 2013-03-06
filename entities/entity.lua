@@ -34,6 +34,11 @@ end
 
 function Entity:attachAt( e, ox, oy )
   if not e then
+    local ox, oy = unpack(self.attachedAt.offset)
+    
+    self.vC.x = self.vC.x - ox
+    self.vC.y = self.vC.y - oy
+    
     self.attachedAt = nil
     return
   end
@@ -122,25 +127,29 @@ function Entity:update(dt)
   self:_move(dt)
 	
 	for k,v in pairs(self.timers) do
-		if v.unit == "s" then
-			v.time = v.time - dt
-		elseif v.unit == "t" then
-			v.time = v.time - 1
-		end
-		
-		if v.time <= 0 then
-			if v.callback ~= nil then
-				local newTime = v.callback(self)
-				if not newTime then --remove timer
-					self.timers[k] = nil
-				else
-					v.time = newTime
-				end
-			else
-				self.timers[k] = nil
-			end
-		end
-		
+    if v.enabled then
+      if v.unit == "s" then
+        v.time = v.time - dt
+      elseif v.unit == "t" then
+        v.time = v.time - 1
+      end
+      
+      if v.time <= 0 then
+        if v.callback ~= nil then
+          
+          local newTime = v.callback(self)
+          if not newTime then --remove timer
+            self.timers[k] = nil
+          else
+            v.time = newTime
+          end
+        else
+          self.timers[k] = nil
+        end
+      end
+      
+    end
+      
 	end
   
   if self.graphics then
@@ -185,6 +194,11 @@ function Entity:draw()
     self.graphics:draw( self.vC )
     --love.graphics.circle("line", self.vC.x, self.vC.y, 5)
   end
+  
+  if self.attachedAt then
+    love.graphics.line( self.vC.x, self.vC.y, self.attachedAt.entity.vC.x, self.attachedAt.entity.vC.y )
+  end
+  
 end
 
 function Entity:stop()
