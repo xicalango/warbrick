@@ -24,6 +24,9 @@ function AbstractGraphics:initialize( init )
   
 end
 
+function AbstractGraphics:setView( name, frame )
+end
+
 function AbstractGraphics:getSize()
   return {0,0}
 end
@@ -100,7 +103,7 @@ function Graphics:initialize( init )
   
   assert( init, "Graphics need image" )
   
-  if string.match( init.image, "^%$+" ) and init.preloader then
+  if string.match( init.image, "^%$" ) and init.preloader then
     self.image = init.preloader:get(init.image)  
   else
     self.image = love.graphics.newImage( init.image )  
@@ -139,8 +142,8 @@ function AniGraphics:_loadViews( path )
 	local chunk = love.filesystem.load( path )
 	self.def = chunk()
   
-  if string.match( self.def.image, "^%$+" ) and self.preloader then
-    self.image = init.preloader:get(self.def.image)  
+  if string.match( self.def.image, "^%$" ) and self.preloader then
+    self.image = self.preloader:get(self.def.image)  
   else
     self.image = love.graphics.newImage( self.def.image )  
   end
@@ -176,6 +179,10 @@ function AniGraphics:setView(name, frame)
 	if self.anim then
 		self.timer = self.view.speed 
 	end
+end
+
+function AniGraphics:getView()
+	return self.viewName
 end
 
 function AniGraphics:update(dt)

@@ -50,23 +50,10 @@ function Player:keypressed(key)
         self.goto.down = true
 		self:startWalk()
     end
-    
-	if self.goto.up then
-		self.vD.y = -1
-	elseif self.goto.down then
-		self.vD.y = 1
-	else
-		self.vD.y = 0
-	end
-
-	if self.goto.left then
-		self.vD.x = -1
-	elseif self.goto.right then
-		self.vD.x = 1
-	else
-		self.vD.x = 0
-	end
-  
+     
+     
+  self:dirUpdate()
+     
   if util.keycheck(key, keyconfig.player[self.number].action) then
     self:doAction()
   end
@@ -88,22 +75,43 @@ function Player:keyreleased(key)
 		self:stopWalk()
 	end
 	
+  self:dirUpdate()
+  
+end
+
+function Player:dirUpdate()
+  local prefix = "normal"
+  
+  if self.carryingBrick then
+    prefix = "pickup"
+  end
+  
+  
 	if self.goto.up then
 		self.vD.y = -1
+    self.graphics:setView( prefix .. "_up" )
 	elseif self.goto.down then
 		self.vD.y = 1
+    self.graphics:setView( prefix .. "_down" )
 	else
 		self.vD.y = 0
 	end
 
 	if self.goto.left then
 		self.vD.x = -1
+    self.graphics:setView( prefix .. "_left" )
 	elseif self.goto.right then
 		self.vD.x = 1
+    self.graphics:setView( prefix .. "_right" )
 	else
 		self.vD.x = 0
 	end
+  
+  if not self:isMoving() then
+    --self.graphics:setView( prefix )
+  end
 end
+
 
 function Player:doAction()
   
@@ -114,10 +122,15 @@ function Player:doAction()
     self.carryingBrick = self.selectedBrick
     self.selectedBrick = nil
     
+    self.graphics:setView( "pickup" )
+    
   elseif self.carryingBrick then
     self.carryingBrick:deattach(self)
     self.carryingBrick = nil
+    self.graphics:setView( "normal" )
   end
+  
+  self:dirUpdate()
   
 end
 

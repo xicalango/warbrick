@@ -17,11 +17,11 @@ function AssetManager:loadCallback( newAssets )
 end
 
 function AssetManager:create( id )
+  print(id)
   return self:_initAsset(self.assets[id])
 end
 
 function AssetManager:_initAsset( t )
-  
   if t.type == "box" then
     return self:_initBox(t)
   elseif t.type == "graphics" then

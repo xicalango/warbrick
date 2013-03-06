@@ -9,33 +9,33 @@ return {
   
   {
     id = "player1",
-    type = "image",
+    type = "ani",
     offset = {18, 22},
-    image = "$playerCharacter",
+    aniFile = "assets/player.lua",
     tint = {127,127,255}
   },
   
   {
     id = "player2",
-    type = "image",
+    type = "ani",
     offset = {18, 22},
-    image = "$playerCharacter",
+    aniFile = "assets/player.lua",
     tint = {255,127,255}
   },
   
   {
     id = "player3",
-    type = "image",
+    type = "ani",
     offset = {18, 22},
-    image = "$playerCharacter",
+    aniFile = "assets/player.lua",
     tint = {255,255,0}
   },
 
   {
     id = "player4",
-    type = "image",
+    type = "ani",
     offset = {18, 22},
-    image = "$playerCharacter",
+    aniFile = "assets/player.lua",
     tint = {0,255,255}
   },
   

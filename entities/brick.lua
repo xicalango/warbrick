@@ -36,7 +36,7 @@ function Brick:selectable()
 end
 
 function Brick:attach( e )
-  self:attachAt(e, 0, -16)
+  self:attachAt(e, 0, -20)
   self.z = e.z + 1
   self.state = Brick.static.states.CARRIED
   

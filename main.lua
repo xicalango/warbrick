@@ -43,7 +43,8 @@ function love.load()
   
   assetManager = AssetManager:new("assets")
   assetManager.graphicsPreloader = graphicsPreloader
-  assetManager:loadFolder()  
+  assetManager:loadFile( "blockAssets.lua" )   
+  assetManager:loadFile( "globalAssets.lua" )   
   
   gameStateManager = GameStateManager:new()
   gameStateManager:loadFolder( "states" )
