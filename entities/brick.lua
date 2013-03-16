@@ -99,7 +99,7 @@ function Brick:update(dt)
         if self:collidesEntity(p) then
           self:stop()
           self:onBrickCollide( p, false )
-          --self:removeFromMap()
+          self:removeFromMap()
           p:stop()
           p:hit()
           self.owner = p
@@ -122,7 +122,7 @@ function Brick:blocks(e)
   if self.state == Brick.static.states.CARRIED then return false end
   
   if self.state == Brick.static.states.FLYING then
-    if e.category.isPlayer and e ~= self.owner then 
+    if not e.category.isPlayer or (e.category.isPlayer and e ~= self.owner) then 
       return true
     end
   end
